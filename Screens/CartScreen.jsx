@@ -3,9 +3,11 @@ import React, { useEffect, useState, useContext } from "react";
 import { View, Text, FlatList, StyleSheet } from "react-native";
 
 import { CartContext } from "../CartContext";
+import { FontAwesome } from "@expo/vector-icons";
 
 export default function CartScreen() {
-  const { cartItems, getItemsCount, getTotalPrice } = useContext(CartContext);
+  const { cartItems, getItemsCount, getTotalPrice, removeItemFromCart } =
+    useContext(CartContext);
 
   function Totals() {
     let [total, setTotal] = useState(0);
@@ -26,6 +28,15 @@ export default function CartScreen() {
         <Text style={styles.lineLeft}>
           {item.product.name} x {item.qty}
         </Text>
+        <FontAwesome
+          name="remove"
+          style={styles.remove}
+          size={20}
+          color="black"
+          onPress={() => {
+            removeItemFromCart(item.id);
+          }}
+        />
         <Text style={styles.lineRight}>
           {item.product.price_sign} {item.totalPrice}
         </Text>
@@ -71,10 +82,15 @@ const styles = StyleSheet.create({
   },
   itemsList: {
     backgroundColor: "#eeeeee",
+    padding: 16,
   },
   itemsListContainer: {
     backgroundColor: "#eeeeee",
     paddingVertical: 8,
     marginHorizontal: 8,
+  },
+  remove: {
+    lineHeight: 40,
+    marginHorizontal: 20,
   },
 });

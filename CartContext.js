@@ -44,6 +44,12 @@ export function CartProvider(props) {
     );
   }
 
+  function removeItemFromCart(id) {
+    setCartItems((prevItems) => {
+      return prevItems.filter((item) => item.id !== id);
+    });
+  }
+
   return (
     <CartContext.Provider
       value={{
@@ -52,6 +58,7 @@ export function CartProvider(props) {
         getItemsCount,
         addItemToCart,
         getTotalPrice,
+        removeItemFromCart,
       }}
     >
       {props.children}
