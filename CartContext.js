@@ -3,51 +3,56 @@ import React, { createContext, useState } from "react";
 export const CartContext = createContext();
 
 export function CartProvider(props) {
-  const [items, setItems] = useState([]);
+  const [cartItems, setCartItems] = useState([]);
 
-  function addItemToCart(id, name, price, price_sign, currency, image_link) {
-    setItems((prevItems) => {
-      const item = prevItems.find((item) => item.id === id);
-      if (!item) {
+  function addItemToCart(product) {
+    setCartItems((prevItems) => {
+      let cartItem = cartItems.find((item) => item.id === product.id);
+      console.log("cartItem", cartItem);
+
+      if (cartItem) {
+        return prevItems.map((item) => {
+          if (item.id === product.id) {
+            item.qty++;
+            item.totalPrice = item.qty * product.price;
+          }
+
+          return item;
+        });
+      } else {
         return [
           ...prevItems,
           {
-            id: id,
+            id: product.id,
+            product,
             qty: 1,
-            product: {
-              id: id,
-              name: name,
-              price: price,
-              price_sign: price_sign,
-              currency: currency,
-              image_link: image_link,
-            },
-            totalPrice: price,
+            totalPrice: parseFloat(product.price),
           },
         ];
-      } else {
-        return prevItems.map((item) => {
-          if (item.id == id) {
-            item.qty++;
-            item.totalPrice += price;
-          }
-          return item;
-        });
       }
     });
   }
 
   function getItemsCount() {
-    return items.reduce((sum, item) => sum + item.qty, 0);
+    return cartItems.reduce((sum, item) => sum + item.qty, 0);
   }
 
   function getTotalPrice() {
-    return items.reduce((sum, item) => sum + item.totalPrice, 0);
+    return cartItems.reduce(
+      (sum, item) => sum + parseFloat(item.totalPrice),
+      0
+    );
   }
 
   return (
     <CartContext.Provider
-      value={{ items, setItems, getItemsCount, addItemToCart, getTotalPrice }}
+      value={{
+        cartItems,
+        setCartItems,
+        getItemsCount,
+        addItemToCart,
+        getTotalPrice,
+      }}
     >
       {props.children}
     </CartContext.Provider>

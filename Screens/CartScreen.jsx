@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useContext } from "react";
 
-import { View, Text, Button, FlatList, StyleSheet } from "react-native";
+import { View, Text, FlatList, StyleSheet } from "react-native";
 
 import { CartContext } from "../CartContext";
 
-export default function CartScreen({ navigation }) {
-  const { items, getItemsCount, getTotalPrice } = useContext(CartContext);
+export default function CartScreen() {
+  const { cartItems, getItemsCount, getTotalPrice } = useContext(CartContext);
 
   function Totals() {
     let [total, setTotal] = useState(0);
@@ -20,14 +20,15 @@ export default function CartScreen({ navigation }) {
     );
   }
 
-  function renderItem({ item }) {
-    console.log(item);
+  function renderCartItem({ item }) {
     return (
       <View style={styles.cartLine}>
         <Text style={styles.lineLeft}>
           {item.product.name} x {item.qty}
         </Text>
-        <Text style={styles.lineRight}>$ {item.totalPrice}</Text>
+        <Text style={styles.lineRight}>
+          {item.product.price_sign} {item.totalPrice}
+        </Text>
       </View>
     );
   }
@@ -35,18 +36,12 @@ export default function CartScreen({ navigation }) {
     <FlatList
       style={styles.itemsList}
       contentContainerStyle={styles.itemsListContainer}
-      data={items}
-      renderItem={renderItem}
-      keyExtractor={(item) => item.product.id.toString()}
+      data={cartItems}
+      renderItem={renderCartItem}
+      keyExtractor={(item) => item.id.toString()}
       ListFooterComponent={Totals}
     />
   );
-
-  //   return (
-  //     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-  //       <Text>SearchScreen is here 🎉</Text>
-  //     </View>
-  //   );
 }
 
 const styles = StyleSheet.create({

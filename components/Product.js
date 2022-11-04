@@ -1,40 +1,33 @@
 import React, { useContext } from "react";
-import {
-  Text,
-  Image,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  Button,
-} from "react-native";
+import { Text, Image, View, StyleSheet, Button, Alert } from "react-native";
 
 import { CartContext } from "../CartContext";
 
 export function Product({ id, name, price, price_sign, currency, image_link }) {
   const { addItemToCart } = useContext(CartContext);
 
-  function onAddToCart(id, name, price, price_sign, currency, image_link) {
-    addItemToCart(id, name, price, price_sign, currency, image_link);
+  function onAddToCart(product) {
+    addItemToCart(product);
+    Alert.alert("Product added to cart");
   }
 
   return (
-    <TouchableOpacity style={styles.card}>
-      <Image style={styles.thumb} source={image_link} />
+    <View style={styles.card}>
+      <Image style={styles.thumb} source={{ uri: image_link }} />
       <View style={styles.infoContainer}>
         <Text style={styles.name}>{name}</Text>
         <Text style={styles.price}>
-          {currency} {price_sign} {price}
+          {currency} {price_sign} {parseFloat(price)}
         </Text>
-        <TouchableOpacity
+        <Button
+          style={styles.button}
+          title="Add to cart"
           onPress={() =>
             onAddToCart({ id, name, price, price_sign, currency, image_link })
           }
-          title="Add to cart"
-        >
-          <Text style={styles.buttonText}>Add to cart</Text>
-        </TouchableOpacity>
+        />
       </View>
-    </TouchableOpacity>
+    </View>
   );
 }
 
@@ -50,12 +43,12 @@ const styles = StyleSheet.create({
       width: 0,
     },
     elevation: 1,
-    marginVertical: 20,
+    marginVertical: 5,
+    padding: 10,
   },
   thumb: {
-    height: 260,
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
+    height: 200,
+    borderRadius: 16,
     width: "100%",
   },
   infoContainer: {
@@ -70,8 +63,8 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     marginBottom: 8,
   },
-  buttonText: {
-    backgroundColor: "#54aeff",
+  button: {
+    backgroundColor: "#841584",
     fontSize: 16,
     padding: 10,
     color: "white",

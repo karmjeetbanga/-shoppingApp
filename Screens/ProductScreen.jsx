@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
 import axios from "axios";
 import { Product } from "../components/Product.js";
 
-export default function ProductScreen({ navigation }) {
+export default function ProductScreen() {
   const [products, setProducts] = useState([]);
-  const [AddToCart, setAddToCart] = useState([]);
 
   useEffect(() => {
     axios
