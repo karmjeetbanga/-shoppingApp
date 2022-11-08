@@ -3,7 +3,7 @@ import { Text, Image, View, StyleSheet, Button, Alert } from "react-native";
 
 import { CartContext } from "../CartContext";
 
-export function Product({ id, name, price, price_sign, currency, image_link }) {
+export function Product({ id, title, price, price_sign, image }) {
   const { addItemToCart } = useContext(CartContext);
 
   function onAddToCart(product) {
@@ -13,18 +13,16 @@ export function Product({ id, name, price, price_sign, currency, image_link }) {
 
   return (
     <View style={styles.card}>
-      <Image style={styles.thumb} source={{ uri: image_link }} />
+      <Image style={styles.thumb} source={{ uri: image }} />
       <View style={styles.infoContainer}>
-        <Text style={styles.name}>{name}</Text>
+        <Text style={styles.name}>{title}</Text>
         <Text style={styles.price}>
-          {currency} {price_sign} {parseFloat(price)}
+          ${price_sign} {parseFloat(price)}
         </Text>
         <Button
           style={styles.button}
           title="Add to cart"
-          onPress={() =>
-            onAddToCart({ id, name, price, price_sign, currency, image_link })
-          }
+          onPress={() => onAddToCart({ id, title, price, price_sign, image })}
         />
       </View>
     </View>
@@ -62,6 +60,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
     marginBottom: 8,
+    marginVertical: 8,
+    color: "#666",
   },
   button: {
     backgroundColor: "#841584",

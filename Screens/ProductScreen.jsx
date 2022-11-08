@@ -8,7 +8,7 @@ export default function ProductScreen() {
 
   useEffect(() => {
     axios
-      .get("http://makeup-api.herokuapp.com/api/v1/products.json")
+      .get("https://fakestoreapi.com/products")
       .then((response) => {
         setProducts(response.data);
       })
